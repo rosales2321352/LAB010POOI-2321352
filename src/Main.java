@@ -1,9 +1,12 @@
 import classes.Direccion;
+import classes.EstudianteTemporal;
 import classes.EstudianteUniversitario;
 import classes.NumeroCelular;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -51,5 +54,29 @@ public class Main {
                 .toList();
 
         estudiantesConNumero.forEach(x -> System.out.println(x.getNombre()));
+
+
+        List<EstudianteTemporal> estudianteTemporalList = estudianteUniversitarioList.stream()
+                .map(x -> new EstudianteTemporal(x.getNombre()+" "+x.getApellidos(),x.getEdad(),x.getDireccion(),x.getNumeros()))
+                .toList();
+        estudianteTemporalList.forEach(x -> System.out.println(x.getName()));
+
+        List<String> listadoNombres = estudianteTemporalList.stream()
+                .map(EstudianteTemporal::getName)
+                .toList();
+        System.out.println(listadoNombres);
+
+        List<String> listadoNombresMayusculas = estudianteTemporalList.stream()
+                .map(x -> x.getName().toUpperCase())
+                .sorted()
+                .collect(Collectors.toList());
+        System.out.println(listadoNombresMayusculas);
+
+        Optional<List<String>> listadoNombresConR = listadoNombresMayusculas.stream()
+                .filter(x -> x.startsWith("R"))
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of));
+        System.out.println(listadoNombresConR);
     }
+
+
 }
